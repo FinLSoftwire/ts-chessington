@@ -1,6 +1,7 @@
 import Piece from './piece';
 import Player from '../player';
 import Board from '../board';
+import Square from '../square';
 
 export default class Pawn extends Piece {
     public constructor(player: Player) {
@@ -8,6 +9,14 @@ export default class Pawn extends Piece {
     }
 
     public getAvailableMoves(board: Board) {
-        return new Array(0);
+        let possibleMoves: Square[] = [];
+        let piecePosition: Square = board.findPiece(this);
+        if (this.player == Player.WHITE) {
+            // Row number can increase
+            possibleMoves.push(new Square(piecePosition.row + 1, piecePosition.col));
+        } else {
+            // Row number can decrease
+        }
+        return possibleMoves;
     }
 }
