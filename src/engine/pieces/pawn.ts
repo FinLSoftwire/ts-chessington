@@ -16,6 +16,7 @@ export default class Pawn extends Piece {
             possibleMoves.push(new Square(piecePosition.row + 1, piecePosition.col));
         } else {
             // Row number can decrease
+            possibleMoves.push(new Square(piecePosition.row - 1, piecePosition.col));
         }
         return possibleMoves;
     }
