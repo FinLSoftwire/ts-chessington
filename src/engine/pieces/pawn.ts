@@ -19,6 +19,12 @@ export default class Pawn extends Piece {
         let possibleMoves: Square[] = [];
         let piecePosition: Square = board.findPiece(this);
         let playerDirection: number = (this.player == Player.WHITE? 1 : -1);
+        let takeDec = new Square(piecePosition.row + playerDirection, piecePosition.col - 1);
+        let takeInc = new Square(piecePosition.row + playerDirection, piecePosition.col + 1);
+        if (takeDec.checkInRange() && typeof board.getPiece(takeDec) !== 'undefined' && board.getPiece(takeDec)?.player !== this.player)
+            possibleMoves.push(takeDec);
+        if (takeInc.checkInRange() && typeof board.getPiece(takeInc) !== 'undefined' && board.getPiece(takeInc)?.player !== this.player)
+            possibleMoves.push(takeInc);
         let oneStep = new Square(piecePosition.row + playerDirection, piecePosition.col);
         if (!oneStep.checkInRange() || typeof board.getPiece(oneStep) !== 'undefined')
             return new Array(0);
