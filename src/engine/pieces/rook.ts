@@ -3,6 +3,7 @@ import Player from '../player';
 import Board from '../board';
 import Square from "../square";
 import GameSettings from "../gameSettings";
+import King from "./king";
 
 export default class Rook extends Piece {
     public constructor(player: Player) {
@@ -16,7 +17,7 @@ export default class Rook extends Piece {
         while (rowIndex >= 0) {
             let newMove = new Square(rowIndex, piecePosition.col);
             if (typeof board.getPiece(newMove) !== 'undefined') {
-                if (board.getPiece(newMove)?.player !== this.player)
+                if (board.getPiece(newMove)?.player !== this.player && !(board.getPiece(newMove) instanceof King))
                     possibleMoves.push(newMove);
                 break;
             }
@@ -27,7 +28,7 @@ export default class Rook extends Piece {
         while (colIndex >= 0) {
             let newMove = new Square(piecePosition.row, colIndex);
             if (typeof board.getPiece(newMove) !== 'undefined') {
-                if (board.getPiece(newMove)?.player !== this.player)
+                if (board.getPiece(newMove)?.player !== this.player && !(board.getPiece(newMove) instanceof King))
                     possibleMoves.push(newMove);
                 break;
             }
@@ -38,7 +39,7 @@ export default class Rook extends Piece {
         while (rowIndex < GameSettings.BOARD_SIZE) {
             let newMove = new Square(rowIndex, piecePosition.col);
             if (typeof board.getPiece(newMove) !== 'undefined') {
-                if (board.getPiece(newMove)?.player !== this.player)
+                if (board.getPiece(newMove)?.player !== this.player && !(board.getPiece(newMove) instanceof King))
                     possibleMoves.push(newMove);
                 break;
             }
@@ -49,7 +50,7 @@ export default class Rook extends Piece {
         while (colIndex < GameSettings.BOARD_SIZE) {
             let newMove = new Square(piecePosition.row, colIndex);
             if (typeof board.getPiece(newMove) !== 'undefined') {
-                if (board.getPiece(newMove)?.player !== this.player)
+                if (board.getPiece(newMove)?.player !== this.player && !(board.getPiece(newMove) instanceof King))
                     possibleMoves.push(newMove);
                 break;
             }
