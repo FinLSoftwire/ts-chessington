@@ -10,8 +10,8 @@ export default class Rook extends Piece {
         super(player);
     }
 
-    public getAvailableMoves(board: Board) {let possibleMoves: Square[] = [];
-        let piecePosition: Square = board.findPiece(this);
+    public static findMoves(board: Board, player: Player, piecePosition: Square) {
+        let possibleMoves: Square[] = [];
         // Stores if each diagonal has been blocked yet
         let unBlocked: boolean[] = [true, true, true, true];
         for (let i = 1; i < GameSettings.BOARD_SIZE; i++) {
@@ -28,7 +28,7 @@ export default class Rook extends Piece {
                         continue;
                     }
                     if (typeof board.getPiece(Pos1) !== 'undefined') {
-                        if (board.getPiece(Pos1)?.player !== this.player && !(board.getPiece(Pos1) instanceof King))
+                        if (board.getPiece(Pos1)?.player !== player && !(board.getPiece(Pos1) instanceof King))
                             possibleMoves.push(Pos1);
                         unBlocked[j] = false;
                         continue;
@@ -38,5 +38,9 @@ export default class Rook extends Piece {
             }
         }
         return possibleMoves;
+    }
+
+    public getAvailableMoves(board: Board) {
+        return Rook.findMoves(board, this.player, board.findPiece(this));
     }
 }
