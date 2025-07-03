@@ -1,6 +1,8 @@
 import Piece from './piece';
 import Player from '../player';
 import Board from '../board';
+import Square from "../square";
+import GameSettings from "../gameSettings";
 
 export default class Bishop extends Piece {
     public constructor(player: Player) {
@@ -8,6 +10,20 @@ export default class Bishop extends Piece {
     }
 
     public getAvailableMoves(board: Board) {
-        return new Array(0);
+        let possibleMoves: Square[] = [];
+        let piecePosition: Square = board.findPiece(this);
+        let delta = piecePosition.row - piecePosition.col;
+        let sum = piecePosition.row + piecePosition.col;
+        for (let i = 0; i < GameSettings.BOARD_SIZE; i++) {
+            if (i !== piecePosition.col) {
+                let Pos1 = new Square(i + delta, i);
+                if (Pos1.row >= 0 && Pos1.row < GameSettings.BOARD_SIZE)
+                    possibleMoves.push(Pos1);
+                let Pos2 = new Square(sum - i, i);
+                if (Pos2.row >= 0 && Pos2.row < GameSettings.BOARD_SIZE)
+                    possibleMoves.push(Pos2);
+            }
+        }
+        return possibleMoves;
     }
 }
