@@ -18,16 +18,15 @@ export default class Pawn extends Piece {
     public getAvailableMoves(board: Board) {
         let possibleMoves: Square[] = [];
         let piecePosition: Square = board.findPiece(this);
-        if (this.player == Player.WHITE) {
-            // Row number can increase
-            possibleMoves.push(new Square(piecePosition.row + 1, piecePosition.col));
-            if (!this.moved)
-                possibleMoves.push(new Square(piecePosition.row + 2, piecePosition.col));
-        } else {
-            // Row number can decrease
-            possibleMoves.push(new Square(piecePosition.row - 1, piecePosition.col));
-            if (!this.moved)
-                possibleMoves.push(new Square(piecePosition.row - 2, piecePosition.col));
+        let playerDirection: number = (this.player == Player.WHITE? 1 : -1);
+        let oneStep = new Square(piecePosition.row + playerDirection, piecePosition.col);
+        if (typeof board.getPiece(oneStep) !== 'undefined')
+            return new Array(0);
+        possibleMoves.push(oneStep);
+        if (!this.moved) {
+            let twoStep = new Square(piecePosition.row + 2 * playerDirection, piecePosition.col);
+            if (typeof board.getPiece(twoStep) === 'undefined')
+                possibleMoves.push(twoStep);
         }
         return possibleMoves;
     }
