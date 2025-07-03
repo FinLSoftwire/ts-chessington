@@ -3,6 +3,7 @@ import Player from '../player';
 import Board from '../board';
 import Square from "../square";
 import GameSettings from "../gameSettings";
+import King from "./king";
 
 export default class Bishop extends Piece {
     public constructor(player: Player) {
@@ -18,7 +19,13 @@ export default class Bishop extends Piece {
             for (let j = 0; j < 4; j++) {
                 if (unBlocked[j]) {
                     let Pos1 = new Square(piecePosition.row + i * (2 * (j % 2) - 1), piecePosition.col + i * (2 * Math.floor(j / 2) - 1));
-                    if (!Pos1.checkInRange() || board.getPiece(Pos1) !== undefined) {
+                    if (!Pos1.checkInRange()) {
+                        unBlocked[j] = false;
+                        continue;
+                    }
+                    if (typeof board.getPiece(Pos1) !== 'undefined') {
+                        if (board.getPiece(Pos1)?.player !== this.player && !(board.getPiece(Pos1) instanceof King))
+                            possibleMoves.push(Pos1);
                         unBlocked[j] = false;
                         continue;
                     }
