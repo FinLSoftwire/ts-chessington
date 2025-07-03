@@ -12,11 +12,37 @@ export default class Rook extends Piece {
     public getAvailableMoves(board: Board) {
         let possibleMoves: Square[] = [];
         let piecePosition: Square = board.findPiece(this);
-        for (let i = 0; i < GameSettings.BOARD_SIZE; i++) {
-            if (i !== piecePosition.col)
-                possibleMoves.push(new Square(piecePosition.row, i));
-            if (i !== piecePosition.row)
-                possibleMoves.push(new Square(i, piecePosition.col));
+        let rowIndex = piecePosition.row-1;
+        while (rowIndex >= 0) {
+            let newMove = new Square(rowIndex, piecePosition.col);
+            if (typeof board.getPiece(newMove) !== 'undefined')
+                break;
+            possibleMoves.push(newMove);
+            rowIndex--;
+        }
+        let colIndex = piecePosition.col-1;
+        while (colIndex >= 0) {
+            let newMove = new Square(piecePosition.row, colIndex);
+            if (typeof board.getPiece(newMove) !== 'undefined')
+                break;
+            possibleMoves.push(newMove);
+            colIndex--;
+        }
+        rowIndex = piecePosition.row+1;
+        while (rowIndex < GameSettings.BOARD_SIZE) {
+            let newMove = new Square(rowIndex, piecePosition.col);
+            if (typeof board.getPiece(newMove) !== 'undefined')
+                break;
+            possibleMoves.push(newMove);
+            rowIndex++;
+        }
+        colIndex = piecePosition.col+1;
+        while (colIndex < GameSettings.BOARD_SIZE) {
+            let newMove = new Square(piecePosition.row, colIndex);
+            if (typeof board.getPiece(newMove) !== 'undefined')
+                break;
+            possibleMoves.push(newMove);
+            colIndex++;
         }
         return possibleMoves;
     }
