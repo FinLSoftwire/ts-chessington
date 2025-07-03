@@ -18,10 +18,10 @@ export default class Bishop extends Piece {
         for (let i = 0; i < GameSettings.BOARD_SIZE; i++) {
             if (i !== piecePosition.col) {
                 let Pos1 = new Square(i + delta, i);
-                if (Pos1.row >= 0 && Pos1.row < GameSettings.BOARD_SIZE)
+                if (Pos1.checkInRange())
                     possibleMoves.push(Pos1);
                 let Pos2 = new Square(sum - i, i);
-                if (Pos2.row >= 0 && Pos2.row < GameSettings.BOARD_SIZE)
+                if (Pos2.checkInRange())
                     possibleMoves.push(Pos2);
             }
         }
