@@ -18,7 +18,7 @@ export default class King extends Piece {
                 let newPos = new Square(piecePosition.row + rowDelta, piecePosition.col + colDelta);
                 if (newPos.checkInRange()) {
                     let newPosPiece = board.getPiece(newPos);
-                    if (typeof newPosPiece === 'undefined' || !(newPosPiece instanceof King))
+                    if (typeof newPosPiece === 'undefined' || (newPosPiece.player !== this.player && !(newPosPiece instanceof King)))
                         possibleMoves.push(newPos);
                 }
             }
