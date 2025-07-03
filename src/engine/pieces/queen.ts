@@ -12,21 +12,32 @@ export default class Queen extends Piece {
     public getAvailableMoves(board: Board) {
         let possibleMoves: Square[] = [];
         let piecePosition: Square = board.findPiece(this);
-        // When moving diagonally, the difference and sum of the row and column remain the same
-        let delta = piecePosition.row - piecePosition.col;
-        let sum = piecePosition.row + piecePosition.col;
-        for (let i = 0; i < GameSettings.BOARD_SIZE; i++) {
-            if (i !== piecePosition.col) {
-                possibleMoves.push(new Square(piecePosition.row, i));
-                let Pos1 = new Square(i + delta, i);
-                if (Pos1.row >= 0 && Pos1.row < GameSettings.BOARD_SIZE)
-                    possibleMoves.push(Pos1);
-                let Pos2 = new Square(sum - i, i);
-                if (Pos2.row >= 0 && Pos2.row < GameSettings.BOARD_SIZE)
-                    possibleMoves.push(Pos2);
+        // Stores if each diagonal has been blocked yet
+        let unBlocked: boolean[] = [true, true, true, true, true, true, true, true];
+        for (let i = 1; i < GameSettings.BOARD_SIZE; i++) {
+            for (let j = 0; j < 4; j++) {
+                if (unBlocked[j*2]) {
+                    let Pos1 = new Square(piecePosition.row + i * (2 * (j % 2) - 1), piecePosition.col + i * (2 * Math.floor(j / 2) - 1));
+                    if (!Pos1.checkInRange() || board.getPiece(Pos1) !== undefined) {
+                        unBlocked[j*2] = false;
+                    } else {
+                        possibleMoves.push(Pos1);
+                    }
+                }
+                if (unBlocked[j*2+1]) {
+                    let Pos1;
+                    if (j % 2 === 0) {
+                        Pos1 = new Square(piecePosition.row, piecePosition.col + i * (2 * Math.floor(j / 2) - 1));
+                    } else {
+                        Pos1 = new Square(piecePosition.row + i * (2 * Math.floor(j / 2) - 1), piecePosition.col);
+                    }
+                    if (!Pos1.checkInRange() || board.getPiece(Pos1) !== undefined) {
+                        unBlocked[j*2+1] = false;
+                    } else {
+                        possibleMoves.push(Pos1);
+                    }
+                }
             }
-            if (i !== piecePosition.row)
-                possibleMoves.push(new Square(i, piecePosition.col));
         }
         return possibleMoves;
     }
