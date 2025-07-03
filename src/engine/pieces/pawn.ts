@@ -20,17 +20,17 @@ export default class Pawn extends Piece {
         let possibleMoves: Square[] = [];
         let piecePosition: Square = board.findPiece(this);
         let playerDirection: number = (this.player == Player.WHITE? 1 : -1);
-        let takeDec = new Square(piecePosition.row + playerDirection, piecePosition.col - 1);
-        let takeInc = new Square(piecePosition.row + playerDirection, piecePosition.col + 1);
-        if (takeDec.checkInRange()) {
-            let decPosPiece = board.getPiece(takeDec);
+        let takeDecreasedCol = new Square(piecePosition.row + playerDirection, piecePosition.col - 1);
+        let takeIncreasedCol = new Square(piecePosition.row + playerDirection, piecePosition.col + 1);
+        if (takeDecreasedCol.checkInRange()) {
+            let decPosPiece = board.getPiece(takeDecreasedCol);
             if (typeof decPosPiece !== 'undefined' && decPosPiece?.player !== this.player && !(decPosPiece instanceof King))
-                possibleMoves.push(takeDec);
+                possibleMoves.push(takeDecreasedCol);
         }
-        if (takeInc.checkInRange()) {
-            let incPosPiece = board.getPiece(takeInc);
+        if (takeIncreasedCol.checkInRange()) {
+            let incPosPiece = board.getPiece(takeIncreasedCol);
             if (typeof incPosPiece !== 'undefined' && incPosPiece?.player !== this.player && !(incPosPiece instanceof King))
-                possibleMoves.push(takeInc);
+                possibleMoves.push(takeIncreasedCol);
         }
         let oneStep = new Square(piecePosition.row + playerDirection, piecePosition.col);
         if (!oneStep.checkInRange() || typeof board.getPiece(oneStep) !== 'undefined')
