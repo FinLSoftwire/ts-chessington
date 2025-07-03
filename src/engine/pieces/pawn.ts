@@ -21,12 +21,13 @@ export default class Pawn extends Piece {
         if (this.player == Player.WHITE) {
             // Row number can increase
             possibleMoves.push(new Square(piecePosition.row + 1, piecePosition.col));
-            if (!this.moved) {
+            if (!this.moved)
                 possibleMoves.push(new Square(piecePosition.row + 2, piecePosition.col));
-            }
         } else {
             // Row number can decrease
             possibleMoves.push(new Square(piecePosition.row - 1, piecePosition.col));
+            if (!this.moved)
+                possibleMoves.push(new Square(piecePosition.row - 2, piecePosition.col));
         }
         return possibleMoves;
     }
