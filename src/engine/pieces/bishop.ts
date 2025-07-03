@@ -12,6 +12,7 @@ export default class Bishop extends Piece {
     public getAvailableMoves(board: Board) {
         let possibleMoves: Square[] = [];
         let piecePosition: Square = board.findPiece(this);
+        // When moving diagonally, the difference and sum of the row and column remain the same
         let delta = piecePosition.row - piecePosition.col;
         let sum = piecePosition.row + piecePosition.col;
         for (let i = 0; i < GameSettings.BOARD_SIZE; i++) {
