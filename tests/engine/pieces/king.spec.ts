@@ -105,7 +105,7 @@ describe('King', () => {
         moves.should.not.deep.include(Square.at(0, 5));
     });
 
-    it('castling only available for the same team', () => {
+    it('castling unavailable when blocked', () => {
         const king = new King(Player.WHITE);
         const rookLeft = new Rook(Player.WHITE);
         const rookRight = new Rook(Player.WHITE);

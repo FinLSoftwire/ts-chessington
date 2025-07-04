@@ -3,6 +3,7 @@ import Player from '../player';
 import Board from '../board';
 import Square from "../square";
 import Rook from "./rook";
+import GameSettings from "../gameSettings";
 
 export default class King extends Piece {
     public constructor(player: Player) {
@@ -29,10 +30,26 @@ export default class King extends Piece {
         let decRook = Square.at(piecePosition.row, 0);
         let incRook = Square.at(piecePosition.row, 0);
         if (castleDec.checkInRange() && board.getPiece(decRook) instanceof Rook && board.getPiece(decRook)?.player === this.player) {
-            possibleMoves.push(castleDec);
+            let blocked: boolean = false;
+            for (let columnIndex = piecePosition.col - 1; columnIndex > 0; columnIndex--) {
+                if (!!board.getPiece(Square.at(piecePosition.row, columnIndex))) {
+                    blocked = true;
+                    break;
+                }
+            }
+            if (!blocked)
+                possibleMoves.push(castleDec);
         }
         if (castleInc.checkInRange() && board.getPiece(incRook) instanceof Rook && board.getPiece(incRook)?.player === this.player) {
-            possibleMoves.push(castleInc);
+            let blocked: boolean = false;
+            for (let columnIndex = piecePosition.col + 1; columnIndex < GameSettings.BOARD_SIZE-1; columnIndex++) {
+                if (!!board.getPiece(Square.at(piecePosition.row, columnIndex))) {
+                    blocked = true;
+                    break;
+                }
+            }
+            if (!blocked)
+                possibleMoves.push(castleInc);
         }
         return possibleMoves;
     }
