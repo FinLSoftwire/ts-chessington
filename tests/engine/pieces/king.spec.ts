@@ -4,6 +4,7 @@ import Player from '../../../src/engine/player';
 import Square from '../../../src/engine/square';
 import Pawn from '../../../src/engine/pieces/pawn';
 import Rook from "../../../src/engine/pieces/rook";
+import Bishop from "../../../src/engine/pieces/bishop";
 
 describe('King', () => {
     let board: Board;
@@ -97,6 +98,24 @@ describe('King', () => {
         board.setPiece(Square.at(0, 3), king);
         board.setPiece(Square.at(0, 0), rookLeft);
         board.setPiece(Square.at(0, 7), rookRight);
+
+        const moves = king.getAvailableMoves(board);
+
+        moves.should.not.deep.include(Square.at(0, 1));
+        moves.should.not.deep.include(Square.at(0, 5));
+    });
+
+    it('castling only available for the same team', () => {
+        const king = new King(Player.WHITE);
+        const rookLeft = new Rook(Player.WHITE);
+        const rookRight = new Rook(Player.WHITE);
+        const bishopLeft = new Bishop(Player.WHITE);
+        const bishopRight = new Bishop(Player.WHITE);
+        board.setPiece(Square.at(0, 3), king);
+        board.setPiece(Square.at(0, 0), rookLeft);
+        board.setPiece(Square.at(0, 7), rookRight);
+        board.setPiece(Square.at(0, 1), bishopLeft);
+        board.setPiece(Square.at(0, 6), bishopRight);
 
         const moves = king.getAvailableMoves(board);
 
