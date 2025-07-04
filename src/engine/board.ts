@@ -36,13 +36,46 @@ export default class Board {
         throw new Error('The supplied piece is not on the board');
     }
 
+    public causesCheck(fromSquare: Square, toSquare: Square) {
+        const movingPiece = this.getPiece(fromSquare);
+        if (!!movingPiece) {
+            let kingSquare: Square | undefined;
+            for (let i = 0; i < GameSettings.BOARD_SIZE; i++) {
+                for (let j = 0; j < GameSettings.BOARD_SIZE; j++) {
+                    let currPiece = this.getPiece(Square.at(i, j));
+                    if (currPiece instanceof King && currPiece.player === movingPiece.player) {
+                        kingSquare = Square.at(i, j);
+                        break;
+                    }
+                }
+            }
+            if (typeof kingSquare === 'undefined') {
+                return false;
+            }
+            for (let colMarch = kingSquare.col + 1; colMarch < GameSettings.BOARD_SIZE; colMarch++) {
+                let currSquare = Square.at(kingSquare.row, colMarch);
+                let currPiece = this.getPiece(currSquare);
+                if (currSquare.equals(fromSquare) || typeof currPiece === 'undefined') {
+                    continue;
+                }
+                if (currSquare.equals(toSquare)) {
+                    break;
+                }
+                // break on the same player, otherwise check if a threat
+                if (currPiece.player === movingPiece.player) {
+
+                }
+            }
+        }
+    }
+
     public movePiece(fromSquare: Square, toSquare: Square) {
         const movingPiece = this.getPiece(fromSquare);        
         if (!!movingPiece && movingPiece.player === this.currentPlayer) {
             this.setPiece(toSquare, movingPiece);
             this.setPiece(fromSquare, undefined);
             if (movingPiece instanceof Pawn) {
-                let playerDirection: number = (this.currentPlayer == Player.WHITE? 1 : -1);
+                let playerDirection: number = (this.currentPlayer === Player.WHITE? 1 : -1);
                 let expectedPawnSquare = Square.at(toSquare.row - playerDirection, toSquare.col);
                 let expectedPawnPiece = this.getPiece(expectedPawnSquare);
                 let squareTwoBehind = Square.at(toSquare.row + playerDirection, toSquare.col);
