@@ -28,10 +28,10 @@ export default class King extends Piece {
         let castleInc: Square = Square.at(piecePosition.row, piecePosition.col + 2);
         let decRook = Square.at(piecePosition.row, 0);
         let incRook = Square.at(piecePosition.row, 0);
-        if (castleDec.checkInRange() && board.getPiece(decRook) instanceof Rook) {
+        if (castleDec.checkInRange() && board.getPiece(decRook) instanceof Rook && board.getPiece(decRook)?.player === this.player) {
             possibleMoves.push(castleDec);
         }
-        if (castleInc.checkInRange() && board.getPiece(incRook) instanceof Rook) {
+        if (castleInc.checkInRange() && board.getPiece(incRook) instanceof Rook && board.getPiece(incRook)?.player === this.player) {
             possibleMoves.push(castleInc);
         }
         return possibleMoves;
