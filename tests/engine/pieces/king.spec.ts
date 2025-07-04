@@ -182,6 +182,20 @@ describe('King', () => {
         rookBlack.moveTo(board, Square.at(6,6));
         assert.equal(board.getPiece(Square.at(0,1)),king);
         assert.equal(board.getPiece(Square.at(0,2)),rookLeft);
+    });
 
+    it('castling moves both pieces in increasing direction', () => {
+        const king = new King(Player.WHITE);
+        const rookLeft = new Rook(Player.WHITE);
+        const rookRight = new Rook(Player.WHITE);
+        const rookBlack = new Rook(Player.BLACK);
+        board.setPiece(Square.at(0, 3), king);
+        board.setPiece(Square.at(0, 0), rookLeft);
+        board.setPiece(Square.at(0, 7), rookRight);
+        board.setPiece(Square.at(6, 7), rookBlack);
+        king.moveTo(board, Square.at(0,5));
+        rookBlack.moveTo(board, Square.at(6,6));
+        assert.equal(board.getPiece(Square.at(0,5)),king);
+        assert.equal(board.getPiece(Square.at(0,4)),rookRight);
     });
 });
