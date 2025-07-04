@@ -89,4 +89,18 @@ describe('King', () => {
         moves.should.deep.include(Square.at(0, 1));
         moves.should.deep.include(Square.at(0, 5));
     });
+
+    it('castling only available for the same team', () => {
+        const king = new King(Player.WHITE);
+        const rookLeft = new Rook(Player.BLACK);
+        const rookRight = new Rook(Player.BLACK);
+        board.setPiece(Square.at(0, 3), king);
+        board.setPiece(Square.at(0, 0), rookLeft);
+        board.setPiece(Square.at(0, 7), rookRight);
+
+        const moves = king.getAvailableMoves(board);
+
+        moves.should.not.deep.include(Square.at(0, 1));
+        moves.should.not.deep.include(Square.at(0, 5));
+    });
 });
