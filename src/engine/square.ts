@@ -13,7 +13,7 @@ export default class Square {
         return new Square(row, col);
     }
 
-    public equals(otherSquare: Square) {
+    public equals(otherSquare: Square | undefined) {
         return !!otherSquare && this.row === otherSquare.row && this.col === otherSquare.col;
     }
 

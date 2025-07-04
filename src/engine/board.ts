@@ -2,6 +2,7 @@ import Player from './player';
 import GameSettings from './gameSettings';
 import Square from './square';
 import Piece from './pieces/piece';
+import Pawn from "./pieces/pawn";
 
 export default class Board {
     public currentPlayer: Player;
@@ -36,11 +37,22 @@ export default class Board {
     public movePiece(fromSquare: Square, toSquare: Square) {
         const movingPiece = this.getPiece(fromSquare);        
         if (!!movingPiece && movingPiece.player === this.currentPlayer) {
-            this.lastMovedPiece = movingPiece;
-            this.previousPosition = fromSquare;
             this.setPiece(toSquare, movingPiece);
             this.setPiece(fromSquare, undefined);
+            if (movingPiece instanceof Pawn) {
+                let playerDirection: number = (this.currentPlayer == Player.WHITE? 1 : -1);
+                let expectedPawnSquare = Square.at(toSquare.row - playerDirection, toSquare.col);
+                let expectedPawnPiece = this.getPiece(expectedPawnSquare);
+                let squareTwoBehind = Square.at(toSquare.row + playerDirection, toSquare.col);
+                if (expectedPawnPiece instanceof Pawn && this.lastMovedPiece === expectedPawnPiece && squareTwoBehind.equals(this.previousPosition)) {
+                    this.setPiece(expectedPawnSquare, undefined);
+                }
+
+            }
+
             this.currentPlayer = (this.currentPlayer === Player.WHITE ? Player.BLACK : Player.WHITE);
+            this.lastMovedPiece = movingPiece;
+            this.previousPosition = fromSquare;
         }
     }
 
