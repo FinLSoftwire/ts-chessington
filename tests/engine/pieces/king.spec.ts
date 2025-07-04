@@ -147,7 +147,7 @@ describe('King', () => {
         const king = new King(Player.WHITE);
         const rookLeft = new Rook(Player.WHITE);
         const rookRight = new Rook(Player.WHITE);
-        const rookBlack = new Pawn(Player.BLACK);
+        const rookBlack = new Rook(Player.BLACK);
         board.setPiece(Square.at(0, 3), king);
         board.setPiece(Square.at(0, 0), rookLeft);
         board.setPiece(Square.at(0, 7), rookRight);
@@ -157,9 +157,9 @@ describe('King', () => {
         rookLeft.moveTo(board, Square.at(0,0));
         rookBlack.moveTo(board, Square.at(7,6));
 
-        rookRight.moveTo(board, Square.at(1,0));
+        rookRight.moveTo(board, Square.at(0,6));
         rookBlack.moveTo(board, Square.at(6,6));
-        rookRight.moveTo(board, Square.at(0,0));
+        rookRight.moveTo(board, Square.at(0,7));
         rookBlack.moveTo(board, Square.at(7,6));
 
         const moves = king.getAvailableMoves(board);

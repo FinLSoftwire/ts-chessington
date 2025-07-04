@@ -30,9 +30,11 @@ export default class King extends Piece {
         }
         let castleDec: Square = Square.at(piecePosition.row, piecePosition.col - 2);
         let castleInc: Square = Square.at(piecePosition.row, piecePosition.col + 2);
-        let decRook = Square.at(piecePosition.row, 0);
-        let incRook = Square.at(piecePosition.row, 0);
-        if (castleDec.checkInRange() && board.getPiece(decRook) instanceof Rook && board.getPiece(decRook)?.player === this.player) {
+        let decRookSquare = Square.at(piecePosition.row, 0);
+        let decRook = board.getPiece(decRookSquare);
+        let incRookSquare = Square.at(piecePosition.row, 0);
+        let incRook = board.getPiece(incRookSquare);
+        if (castleDec.checkInRange() && decRook instanceof Rook && decRook?.player === this.player && !decRook?.hasMoved()) {
             let blocked: boolean = false;
             for (let columnIndex = piecePosition.col - 1; columnIndex > 0; columnIndex--) {
                 if (!!board.getPiece(Square.at(piecePosition.row, columnIndex))) {
@@ -43,7 +45,7 @@ export default class King extends Piece {
             if (!blocked)
                 possibleMoves.push(castleDec);
         }
-        if (castleInc.checkInRange() && board.getPiece(incRook) instanceof Rook && board.getPiece(incRook)?.player === this.player) {
+        if (castleInc.checkInRange() && incRook instanceof Rook && incRook?.player === this.player && !incRook?.hasMoved()) {
             let blocked: boolean = false;
             for (let columnIndex = piecePosition.col + 1; columnIndex < GameSettings.BOARD_SIZE-1; columnIndex++) {
                 if (!!board.getPiece(Square.at(piecePosition.row, columnIndex))) {
