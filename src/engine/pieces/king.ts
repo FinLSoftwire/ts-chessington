@@ -25,6 +25,9 @@ export default class King extends Piece {
                 }
             }
         }
+        if (this.moved) {
+            return possibleMoves;
+        }
         let castleDec: Square = Square.at(piecePosition.row, piecePosition.col - 2);
         let castleInc: Square = Square.at(piecePosition.row, piecePosition.col + 2);
         let decRook = Square.at(piecePosition.row, 0);

@@ -5,19 +5,8 @@ import Square from '../square';
 import King from "./king";
 
 export default class Pawn extends Piece {
-    private moved: boolean = false;
     public constructor(player: Player) {
         super(player);
-        this.moved = false;
-    }
-
-    public moveTo(board: Board, newSquare: Square) {
-        super.moveTo(board, newSquare);
-        this.moved = true;
-    }
-
-    public hasMoved() {
-        return this.moved;
     }
 
     public getAvailableMoves(board: Board) {
