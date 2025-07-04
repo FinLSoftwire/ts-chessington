@@ -2,6 +2,7 @@ import Piece from './piece';
 import Player from '../player';
 import Board from '../board';
 import Square from "../square";
+import Rook from "./rook";
 
 export default class King extends Piece {
     public constructor(player: Player) {
@@ -22,6 +23,16 @@ export default class King extends Piece {
                         possibleMoves.push(newPos);
                 }
             }
+        }
+        let castleDec: Square = Square.at(piecePosition.row, piecePosition.col - 2);
+        let castleInc: Square = Square.at(piecePosition.row, piecePosition.col + 2);
+        let decRook = Square.at(piecePosition.row, 0);
+        let incRook = Square.at(piecePosition.row, 0);
+        if (castleDec.checkInRange() && board.getPiece(decRook) instanceof Rook) {
+            possibleMoves.push(castleDec);
+        }
+        if (castleInc.checkInRange() && board.getPiece(incRook) instanceof Rook) {
+            possibleMoves.push(castleInc);
         }
         return possibleMoves;
     }
