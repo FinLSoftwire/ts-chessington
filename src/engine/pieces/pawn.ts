@@ -29,23 +29,25 @@ export default class Pawn extends Piece {
         if (takeDecreasedCol.checkInRange()) {
             let decPosPiece = board.getPiece(takeDecreasedCol);
             // en passant
-            let decreasedColAdjacent = new Square(piecePosition.row, piecePosition.col - 1);
-            let adjPieceDec = board.getPiece(decreasedColAdjacent);
-            if (typeof decPosPiece === 'undefined' && adjPieceDec instanceof Pawn && adjPieceDec.player !== this.player) {
-                possibleMoves.push(takeDecreasedCol);
+            if (typeof decPosPiece === 'undefined') {
+                let decreasedColAdjacent = new Square(piecePosition.row, piecePosition.col - 1);
+                let adjPieceDec = board.getPiece(decreasedColAdjacent);
+                if (adjPieceDec instanceof Pawn && adjPieceDec.player !== this.player)
+                    possibleMoves.push(takeDecreasedCol);
             }
-            if (typeof decPosPiece !== 'undefined' && decPosPiece?.player !== this.player && !(decPosPiece instanceof King))
+            else if (decPosPiece?.player !== this.player && !(decPosPiece instanceof King))
                 possibleMoves.push(takeDecreasedCol);
         }
         if (takeIncreasedCol.checkInRange()) {
             let incPosPiece = board.getPiece(takeIncreasedCol);
             // en passant
-            let increasedColAdjacent = new Square(piecePosition.row, piecePosition.col + 1);
-            let adjPieceInc = board.getPiece(increasedColAdjacent);
-            if (typeof incPosPiece === 'undefined' && adjPieceInc instanceof Pawn && adjPieceInc.player !== this.player) {
-                possibleMoves.push(takeIncreasedCol);
+            if (typeof incPosPiece === 'undefined') {
+                let increasedColAdjacent = new Square(piecePosition.row, piecePosition.col + 1);
+                let adjPieceInc = board.getPiece(increasedColAdjacent);
+                if (adjPieceInc instanceof Pawn && adjPieceInc.player !== this.player)
+                    possibleMoves.push(takeIncreasedCol);
             }
-            if (typeof incPosPiece !== 'undefined' && incPosPiece?.player !== this.player && !(incPosPiece instanceof King))
+            else if (incPosPiece?.player !== this.player && !(incPosPiece instanceof King))
                 possibleMoves.push(takeIncreasedCol);
         }
 
