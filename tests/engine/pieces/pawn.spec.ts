@@ -4,6 +4,7 @@ import Player from '../../../src/engine/player';
 import Square from '../../../src/engine/square';
 import Rook from '../../../src/engine/pieces/rook';
 import King from '../../../src/engine/pieces/king';
+import * as assert from "node:assert";
 
 describe('Pawn', () => {
 
@@ -131,6 +132,17 @@ describe('Pawn', () => {
             const moves = wPawn.getAvailableMoves(board);
 
             moves.should.not.deep.include(Square.at(5, 3));
+        });
+
+        it('en passant removes piece', () => {
+            const wPawn = new Pawn(Player.WHITE);
+            const bPawn = new Pawn(Player.BLACK);
+            board.setPiece(Square.at(3, 4), wPawn);
+            board.setPiece(Square.at(6, 3), bPawn);
+            wPawn.moveTo(board, Square.at(4,4));
+            bPawn.moveTo(board, Square.at(4,3));
+            wPawn.moveTo(board, Square.at(5,3));
+            assert.equal(board.getPiece(Square.at(4,3)), undefined);
         });
     });
 
@@ -264,7 +276,7 @@ describe('Pawn', () => {
         moves.should.not.deep.include(Square.at(2, 4));
     });
 
-    it('en passants', () => {
+    it('en passants only on a double ,move', () => {
         const wPawn = new Pawn(Player.WHITE);
         const bPawn = new Pawn(Player.BLACK);
         board.setPiece(Square.at(1, 4), wPawn);
@@ -276,5 +288,15 @@ describe('Pawn', () => {
         const moves = bPawn.getAvailableMoves(board);
 
         moves.should.not.deep.include(Square.at(2, 4));
+    });
+
+    it('en passant removes piece', () => {
+        const wPawn = new Pawn(Player.WHITE);
+        const bPawn = new Pawn(Player.BLACK);
+        board.setPiece(Square.at(1, 4), wPawn);
+        board.setPiece(Square.at(3, 3), bPawn);
+        wPawn.moveTo(board, Square.at(3,4));
+        bPawn.moveTo(board, Square.at(2,4));
+        assert.equal(board.getPiece(Square.at(3,4)),undefined);
     });
 });
