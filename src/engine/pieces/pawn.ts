@@ -26,13 +26,16 @@ export default class Pawn extends Piece {
         let playerDirection: number = (this.player == Player.WHITE? 1 : -1);
         let takeDecreasedCol = new Square(piecePosition.row + playerDirection, piecePosition.col - 1);
         let takeIncreasedCol = new Square(piecePosition.row + playerDirection, piecePosition.col + 1);
+        let previousMovedPiece = board.getLastPiece();
+        let previousMovedPosition= board.getLastPosition();
         if (takeDecreasedCol.checkInRange()) {
             let decPosPiece = board.getPiece(takeDecreasedCol);
             // en passant
             if (typeof decPosPiece === 'undefined') {
                 let decreasedColAdjacent = new Square(piecePosition.row, piecePosition.col - 1);
                 let adjPieceDec = board.getPiece(decreasedColAdjacent);
-                if (adjPieceDec instanceof Pawn && adjPieceDec.player !== this.player)
+                let expectedPos = Square.at(decreasedColAdjacent.row + 2 * playerDirection, decreasedColAdjacent.col);
+                if (adjPieceDec instanceof Pawn && adjPieceDec.player !== this.player && adjPieceDec === previousMovedPiece && previousMovedPosition?.equals(expectedPos))
                     possibleMoves.push(takeDecreasedCol);
             }
             else if (decPosPiece?.player !== this.player && !(decPosPiece instanceof King))
@@ -44,7 +47,8 @@ export default class Pawn extends Piece {
             if (typeof incPosPiece === 'undefined') {
                 let increasedColAdjacent = new Square(piecePosition.row, piecePosition.col + 1);
                 let adjPieceInc = board.getPiece(increasedColAdjacent);
-                if (adjPieceInc instanceof Pawn && adjPieceInc.player !== this.player)
+                let expectedPos = Square.at(increasedColAdjacent.row + 2 * playerDirection, increasedColAdjacent.col);
+                if (adjPieceInc instanceof Pawn && adjPieceInc.player !== this.player && adjPieceInc === previousMovedPiece && previousMovedPosition?.equals(expectedPos))
                     possibleMoves.push(takeIncreasedCol);
             }
             else if (incPosPiece?.player !== this.player && !(incPosPiece instanceof King))
