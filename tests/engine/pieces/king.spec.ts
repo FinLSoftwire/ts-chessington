@@ -5,6 +5,7 @@ import Square from '../../../src/engine/square';
 import Pawn from '../../../src/engine/pieces/pawn';
 import Rook from "../../../src/engine/pieces/rook";
 import Bishop from "../../../src/engine/pieces/bishop";
+import assert from "node:assert";
 
 describe('King', () => {
     let board: Board;
@@ -166,5 +167,21 @@ describe('King', () => {
 
         moves.should.not.deep.include(Square.at(0, 1));
         moves.should.not.deep.include(Square.at(0, 5));
+    });
+
+    it('castling moves both pieces in decreasing direction', () => {
+        const king = new King(Player.WHITE);
+        const rookLeft = new Rook(Player.WHITE);
+        const rookRight = new Rook(Player.WHITE);
+        const rookBlack = new Rook(Player.BLACK);
+        board.setPiece(Square.at(0, 3), king);
+        board.setPiece(Square.at(0, 0), rookLeft);
+        board.setPiece(Square.at(0, 7), rookRight);
+        board.setPiece(Square.at(6, 7), rookBlack);
+        king.moveTo(board, Square.at(0,1));
+        rookBlack.moveTo(board, Square.at(6,6));
+        assert.equal(board.getPiece(Square.at(0,1)),king);
+        assert.equal(board.getPiece(Square.at(0,2)),rookLeft);
+
     });
 });
