@@ -142,4 +142,29 @@ describe('King', () => {
         moves.should.not.deep.include(Square.at(0, 1));
         moves.should.not.deep.include(Square.at(0, 5));
     });
+
+    it('castling unavailable after a rook move', () => {
+        const king = new King(Player.WHITE);
+        const rookLeft = new Rook(Player.WHITE);
+        const rookRight = new Rook(Player.WHITE);
+        const rookBlack = new Pawn(Player.BLACK);
+        board.setPiece(Square.at(0, 3), king);
+        board.setPiece(Square.at(0, 0), rookLeft);
+        board.setPiece(Square.at(0, 7), rookRight);
+        board.setPiece(Square.at(7, 6), rookBlack);
+        rookLeft.moveTo(board, Square.at(1,0));
+        rookBlack.moveTo(board, Square.at(6,6));
+        rookLeft.moveTo(board, Square.at(0,0));
+        rookBlack.moveTo(board, Square.at(7,6));
+
+        rookRight.moveTo(board, Square.at(1,0));
+        rookBlack.moveTo(board, Square.at(6,6));
+        rookRight.moveTo(board, Square.at(0,0));
+        rookBlack.moveTo(board, Square.at(7,6));
+
+        const moves = king.getAvailableMoves(board);
+
+        moves.should.not.deep.include(Square.at(0, 1));
+        moves.should.not.deep.include(Square.at(0, 5));
+    });
 });
