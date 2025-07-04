@@ -5,6 +5,7 @@ import Square from '../../../src/engine/square';
 import Rook from '../../../src/engine/pieces/rook';
 import King from '../../../src/engine/pieces/king';
 import * as assert from "node:assert";
+import Queen from "../../../src/engine/pieces/queen";
 
 describe('Pawn', () => {
 
@@ -143,6 +144,13 @@ describe('Pawn', () => {
             bPawn.moveTo(board, Square.at(4,3));
             wPawn.moveTo(board, Square.at(5,3));
             assert.equal(board.getPiece(Square.at(4,3)), undefined);
+        });
+
+        it('pawn promotion', () => {
+            const wPawn = new Pawn(Player.WHITE);
+            board.setPiece(Square.at(6, 4), wPawn);
+            wPawn.moveTo(board, Square.at(7,4));
+            assert.equal(board.getPiece(Square.at(7,4)) instanceof Queen, true);
         });
     });
 
@@ -298,5 +306,12 @@ describe('Pawn', () => {
         wPawn.moveTo(board, Square.at(3,4));
         bPawn.moveTo(board, Square.at(2,4));
         assert.equal(board.getPiece(Square.at(3,4)),undefined);
+    });
+
+    it('pawn promotion', () => {
+        const bPawn = new Pawn(Player.BLACK);
+        board.setPiece(Square.at(1, 4), bPawn);
+        bPawn.moveTo(board, Square.at(0,4));
+        assert.equal(board.getPiece(Square.at(0,4)) instanceof Queen, true);
     });
 });
