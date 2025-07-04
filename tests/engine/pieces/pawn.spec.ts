@@ -117,6 +117,21 @@ describe('Pawn', () => {
 
             moves.should.not.deep.include(Square.at(5, 3));
         });
+
+        it('en passants only on a double move', () => {
+            const wPawn = new Pawn(Player.WHITE);
+            const bPawn = new Pawn(Player.BLACK);
+            board.setPiece(Square.at(2, 4), wPawn);
+            board.setPiece(Square.at(6, 3), bPawn);
+            wPawn.moveTo(board, Square.at(3,4));
+            bPawn.moveTo(board, Square.at(5,3));
+            wPawn.moveTo(board, Square.at(4,4));
+            bPawn.moveTo(board, Square.at(4,3));
+
+            const moves = wPawn.getAvailableMoves(board);
+
+            moves.should.not.deep.include(Square.at(5, 3));
+        });
     });
 
     describe('black pawns', () => {
@@ -243,6 +258,20 @@ describe('Pawn', () => {
         wPawn.moveTo(board, Square.at(3,4));
         bPawn2.moveTo(board, Square.at(5, 7));
         wPawn2.moveTo(board, Square.at(2, 7));
+
+        const moves = bPawn.getAvailableMoves(board);
+
+        moves.should.not.deep.include(Square.at(2, 4));
+    });
+
+    it('en passants', () => {
+        const wPawn = new Pawn(Player.WHITE);
+        const bPawn = new Pawn(Player.BLACK);
+        board.setPiece(Square.at(1, 4), wPawn);
+        board.setPiece(Square.at(4, 3), bPawn);
+        wPawn.moveTo(board, Square.at(2,4));
+        bPawn.moveTo(board, Square.at(3,3));
+        wPawn.moveTo(board, Square.at(3,4));
 
         const moves = bPawn.getAvailableMoves(board);
 
