@@ -3,6 +3,7 @@ import GameSettings from './gameSettings';
 import Square from './square';
 import Piece from './pieces/piece';
 import Pawn from "./pieces/pawn";
+import King from "./pieces/king";
 
 export default class Board {
     public currentPlayer: Player;
@@ -48,6 +49,18 @@ export default class Board {
                     this.setPiece(expectedPawnSquare, undefined);
                 }
 
+            }
+            else if (movingPiece instanceof King) {
+                let colDelta = toSquare.col - fromSquare.col;
+                if (Math.abs(colDelta) == 2) {
+                    let colDeltaSign = (colDelta > 0) ? 1 : -1;
+                    let oldRookCol = (colDelta > 0) ? 7 : 0;
+                    let oldRookSquare = Square.at(fromSquare.row, oldRookCol);
+                    let oldRook = this.getPiece(oldRookSquare);
+                    let newRookSquare = Square.at(toSquare.row, toSquare.col - colDeltaSign);
+                    this.setPiece(newRookSquare, oldRook);
+                    this.setPiece(oldRookSquare, undefined);
+                }
             }
 
             this.currentPlayer = (this.currentPlayer === Player.WHITE ? Player.BLACK : Player.WHITE);
