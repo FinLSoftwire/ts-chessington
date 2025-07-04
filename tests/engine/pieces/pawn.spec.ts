@@ -96,6 +96,27 @@ describe('Pawn', () => {
 
             moves.should.deep.include(Square.at(5, 3));
         });
+
+        it('en passants only on first move', () => {
+            const wPawn = new Pawn(Player.WHITE);
+            const bPawn = new Pawn(Player.BLACK);
+            const wPawn2 = new Pawn(Player.WHITE);
+            const bPawn2 = new Pawn(Player.BLACK);
+            board.setPiece(Square.at(3, 4), wPawn);
+            board.setPiece(Square.at(6, 3), bPawn);
+            board.setPiece(Square.at(1, 7), wPawn2);
+            board.setPiece(Square.at(6, 7), bPawn2);
+
+            wPawn.moveTo(board, Square.at(4,4));
+            bPawn.moveTo(board, Square.at(4,3));
+
+            wPawn2.moveTo(board, Square.at(2, 7));
+            bPawn2.moveTo(board, Square.at(5, 7));
+
+            const moves = wPawn.getAvailableMoves(board);
+
+            moves.should.not.deep.include(Square.at(5, 3));
+        });
     });
 
     describe('black pawns', () => {
@@ -208,5 +229,23 @@ describe('Pawn', () => {
         const moves = bPawn.getAvailableMoves(board);
 
         moves.should.deep.include(Square.at(2, 4));
+    });
+
+    it('en passants only on first move', () => {
+        const wPawn = new Pawn(Player.WHITE);
+        const bPawn = new Pawn(Player.BLACK);
+        const wPawn2 = new Pawn(Player.WHITE);
+        const bPawn2 = new Pawn(Player.BLACK);
+        board.setPiece(Square.at(1, 4), wPawn);
+        board.setPiece(Square.at(3, 3), bPawn);
+        board.setPiece(Square.at(1, 7), wPawn2);
+        board.setPiece(Square.at(6, 7), bPawn2);
+        wPawn.moveTo(board, Square.at(3,4));
+        bPawn2.moveTo(board, Square.at(5, 7));
+        wPawn2.moveTo(board, Square.at(2, 7));
+
+        const moves = bPawn.getAvailableMoves(board);
+
+        moves.should.not.deep.include(Square.at(2, 4));
     });
 });
