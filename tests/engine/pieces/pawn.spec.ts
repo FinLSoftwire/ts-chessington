@@ -310,7 +310,10 @@ describe('Pawn', () => {
 
     it('pawn promotion', () => {
         const bPawn = new Pawn(Player.BLACK);
+        const wPawn = new Pawn(Player.WHITE);
+        board.setPiece(Square.at(0, 0), wPawn);
         board.setPiece(Square.at(1, 4), bPawn);
+        wPawn.moveTo(board, Square.at(1, 0));
         bPawn.moveTo(board, Square.at(0,4));
         assert.equal(board.getPiece(Square.at(0,4)) instanceof Queen, true);
     });

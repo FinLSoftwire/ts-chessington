@@ -4,6 +4,7 @@ import Square from './square';
 import Piece from './pieces/piece';
 import Pawn from "./pieces/pawn";
 import King from "./pieces/king";
+import Queen from "./pieces/queen";
 
 export default class Board {
     public currentPlayer: Player;
@@ -47,6 +48,9 @@ export default class Board {
                 let squareTwoBehind = Square.at(toSquare.row + playerDirection, toSquare.col);
                 if (expectedPawnPiece instanceof Pawn && this.lastMovedPiece === expectedPawnPiece && squareTwoBehind.equals(this.previousPosition)) {
                     this.setPiece(expectedPawnSquare, undefined);
+                }
+                if (toSquare.row === (this.currentPlayer === Player.BLACK? 0:7)) {
+                    this.setPiece(toSquare, new Queen(this.currentPlayer));
                 }
 
             }
