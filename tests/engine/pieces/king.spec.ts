@@ -3,6 +3,7 @@ import Board from '../../../src/engine/board';
 import Player from '../../../src/engine/player';
 import Square from '../../../src/engine/square';
 import Pawn from '../../../src/engine/pieces/pawn';
+import Rook from "../../../src/engine/pieces/rook";
 
 describe('King', () => {
     let board: Board;
@@ -73,5 +74,19 @@ describe('King', () => {
         const moves = king.getAvailableMoves(board);
 
         moves.should.not.deep.include(Square.at(5, 5));
+    });
+
+    it('castling move available', () => {
+        const king = new King(Player.WHITE);
+        const rookLeft = new Rook(Player.WHITE);
+        const rookRight = new Rook(Player.WHITE);
+        board.setPiece(Square.at(0, 3), king);
+        board.setPiece(Square.at(0, 0), rookLeft);
+        board.setPiece(Square.at(0, 7), rookRight);
+
+        const moves = king.getAvailableMoves(board);
+
+        moves.should.deep.include(Square.at(0, 1));
+        moves.should.deep.include(Square.at(0, 5));
     });
 });
